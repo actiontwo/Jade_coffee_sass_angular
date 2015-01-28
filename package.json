@@ -1,0 +1,26 @@
+{
+  "name": "FairAdvice",
+  "version": "1.0.0",
+  "description": "HTML_CSS",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/actiontwo/tinySafe_HTMLCSS.git"
+  },
+  "author": "actiontwo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/actiontwo/tinySafe_HTMLCSS/issues"
+  },
+  "homepage": "https://github.com/actiontwo/tinySafe_HTMLCSS",
+  "dependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-copy": "^0.7.0",
+    "grunt-contrib-jade": "^0.14.0",
+    "grunt-contrib-sass": "^0.8.1",
+    "grunt-contrib-watch": "^0.6.1"
+  }
+}
