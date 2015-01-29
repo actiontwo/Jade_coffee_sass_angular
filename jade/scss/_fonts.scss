@@ -1,0 +1,17 @@
+$fontPath: 'fonts/';
+$robotoRegular: 'roboto-regular';
+
+@mixin fontFace($shortNameFont, $fontName) {
+  font-family: $shortNameFont;
+  src: url($fontPath + '/'+ $fontName + '.eot');
+  src: url($fontPath + '/'+ $fontName +'.eot?#iefix') format('embedded-opentype'),
+  url($fontPath + '/'+ $fontName +'.woff') format('woff'),
+  url($fontPath + '/'+ $fontName +'.ttf') format('truetype'),
+  url($fontPath + '/'+ $fontName +'.svg#'+ $shortNameFont) format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  @include fontFace($robotoBold, 'roboto-bold-webfont');
+}
