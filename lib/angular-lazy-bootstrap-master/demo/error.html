@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lazy Bootstrap Demo</title>
+</head>
+
+<body>
+
+<div id="loading" style="display: none;">
+    Loading...
+</div>
+
+<div id="error" style="display: none;">
+    Could not load configuration!
+</div>
+
+<div ng-controller="AppController" ng-cloak>
+    Value: {{ value }}  <br/>
+    Constant: {{ const }}
+</div>
+
+<script src="../lib/jquery/jquery.js"></script>
+<script src="../lib/angular/angular.js"></script>
+<script src="../src/bootstrap.js"></script>
+<script>
+
+    window.app = {};
+
+    angular.lazy("demoApp")
+            .resolve(['$q', '$timeout', function ($q, $timeout) {
+                var deferred = $q.defer();
+                $timeout(function () {
+                    deferred.reject('EXCEPTION');
+                }, 2000);
+                return deferred.promise;
+            }])
+            .loading(function(){
+                angular.element('#loading').show();
+            })
+            .error(function(){
+                angular.element('#error').show();
+            })
+            .done(function() {
+                angular.element('#loading').hide();
+            })
+            .bootstrap();
+
+    angular.module('demoApp', [])
+            .config(function () {
+                console.log('in config(): ' + JSON.stringify(window.app.config));
+            })
+            .run(function () {
+                console.log('in run(): ' + JSON.stringify(window.app.config));
+            })
+            .controller('AppController', function ($scope) {
+                $scope.value = window.app.config.name;
+                $scope.const = window.app.const;
+            });
+</script>
+</body>
+
+</html>

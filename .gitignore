@@ -1,5 +1,6 @@
-node_modules/
 .idea/
-psd/
-doc/
 .sass-cache/
+public/
+node_modules/
+bower_components/
+npm-debug.log

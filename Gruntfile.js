@@ -1,72 +1,29 @@
-var tasks = ['sass:dist','jade:html'];
-
 module.exports = function (grunt) {
 
-  // Project configuration.
-  grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
+  var includeAll = require('include-all');
 
-    sass: {
-      dist: {
-        options:{
-          lineNumbers:true
-        },
-        files: [
-          {
-            expand: true,
-            cwd: 'jade',
-            src: ['**/*.scss'],
-            dest: 'html/',
-            ext: '.css'
-          }
-        ]
-      }
-    },
-    jade:{
-      html: {
-        options:{
-          pretty:true
-        },
-        files: [
-          {
-            expand: true,
-            cwd: 'jade',
-            src: ['**/*.jade'],
-            dest: 'html/',
-            ext: '.html'
-          }
-        ]
-      }
-    },
-    copy:{
-      dev: {
-        files: [{
-          expand: true,
-          cwd: 'html',
-          src: ['scss/style.css'],
-          dest: 'html/'
-        }]
-      }
-    },
-    watch :{
-      assets: {
+  function loadTasks(relPath) {
+    return includeAll({
+        dirname: require('path').resolve(__dirname, relPath),
+        filter: /(.+)\.js$/
+      }) || {};
+  }
 
-        // Assets to watch:
-        files: ['jade/**/*'],
-
-        // When assets are changed:
-        tasks: tasks
+  function invokeConfigFn(tasks) {
+    for (var taskName in tasks) {
+      if (tasks.hasOwnProperty(taskName)) {
+        tasks[taskName](grunt);
       }
     }
-  });
+  }
 
-  // Load the plugin that provides the "uglify" task.
-  grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.loadNpmTasks('grunt-contrib-jade');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-watch');
+  var taskConfigurations = loadTasks('./tasks/config'),
+    registerDefinitions = loadTasks('./tasks/register');
+  if (!registerDefinitions.default) {
+    registerDefinitions.default = function (grunt) { grunt.registerTask('default', []); };
+  }
 
-  // Default task(s).
-  grunt.registerTask('default', tasks.concat(['watch:assets']));
+  invokeConfigFn(taskConfigurations);
+  invokeConfigFn(registerDefinitions);
 
 };
